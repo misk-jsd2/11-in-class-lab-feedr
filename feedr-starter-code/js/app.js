@@ -1,8 +1,4 @@
-/*
-  Please add all Javascript code to this file.
-*/
 $(document).ready(function(){
-
     fetch("http://digg.com/api/news/popular.json")
     .then(function(response) {
     console.log('Fetch response object: \n');
@@ -12,22 +8,21 @@ $(document).ready(function(){
     })
     .then(function(json) {
     console.log('Fetch: \n');
-    //console.log(json);
-    //console.log(json.data);
+    console.log(json);
+    console.log(json.data);
     console.log(json.data.feed);
     $("#popUp").toggleClass("hidden");
-    // const arrayOfjQueryArticles = [];
     $("#main").html('');
-    
-    $.each(json.data.feed, function( index) {
-      console.log(json.data.feed[index].content);
+    $.each(json.data.feed, function(key, value) {
+      console.log(value.content);
+      console.log(value.content.url);
       let Article= `<article class="article">
                       <section class="featuredImage">
-                        <img src="${json.data.feed[index].content.media.images[0].url}" alt="img" />
+                        <img src="${value.content.media.images[0].url}" alt="img" />
                       </section>
                       <section class="articleContent">
-                          <a href="${json.data.feed[index].content.url}"><h3>${json.data.feed[index].content.title}</h3></a>
-                          <h6>${json.data.feed[index].content.tags[0].display_name}</h6>
+                          <a href="${value.content.url}"><h3>${value.content.title}</h3></a>
+                          <h6>${value.content.tags[0].display_name}</h6>
                       </section>
                       <section class="impressions">
                         526
@@ -40,23 +35,7 @@ $(document).ready(function(){
   
 });
 
-
-
-// $.ajax({
-//   url: "http://digg.com/api/news/popular.json",
-//   data: {
-//       format: "json"
-//   },
-//   success: function (response) {
-//       console.log('jQuery $.ajax():');
-//       console.log(response);
-//       console.log(response.data);
-//   }
-// });
-
-// $.get("http://digg.com/api/news/popular.json", function(response) {
-//   console.log('jQuery $.get():');
-//   console.log(response);
-//   console.log(response.data);
-// });
-
+$( "#SourceSet" ).on( "click", "li", function( event ) {
+  event.preventDefault();
+  console.log( $( this ).text() );
+});
