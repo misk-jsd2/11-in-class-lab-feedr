@@ -31,7 +31,7 @@ __Feed sources:__
 
 Give the user the ability to pull from a multiple news sources. Here are some news source suggestions:
 
-- [News API](https://newsapi.org/)
+- [News API](https://newsapi.org/) 
 - [The Guardian](https://open-platform.theguardian.com/)
 - [Mashable: http://mashable.com/stories.json](http://mashable.com/stories.json)
 - [Reddit: https://www.reddit.com/top.json](https://www.reddit.com/top.json)
