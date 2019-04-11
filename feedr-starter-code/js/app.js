@@ -27,9 +27,18 @@ let publishedAt = '';
       let url = '';
       let img = '';
 
+      const first = document.querySelector("#menu li:nth-child(1)")
+      console.log(first);
 
-
-$.get(newsUrl, function(response) {
+      first.addEventListener('click', function(){
+        news();
+    })
+    
+  //                       -------++++------ Source 1  -------++++------
+   
+    let news =function news() {
+      
+     $.get(newsUrl, function(response) {
 
   
   
@@ -40,6 +49,12 @@ $.get(newsUrl, function(response) {
 
     console.log(response);
     console.log(response.articles[0].title);
+
+    
+    
+    
+
+
 
    
     response.articles.forEach((article, index) => {
@@ -54,15 +69,6 @@ $.get(newsUrl, function(response) {
       
       
       indexs.push(index);
-      
-      
-
-      // console.log(id);
-      // console.log(author);
-      // console.log(description);
-      // console.log(url);
-      
-
 
       let newArticle = `
       <article id=${id} class="article">
@@ -83,11 +89,7 @@ $.get(newsUrl, function(response) {
     });
     console.log(indexs);
     // console.log(articlesProprty);
-    
-      
-    
-  
-    
+
     $('#main').append(arrayOfjQueryArticles);
     
     // $("a").click(function(event){
@@ -98,8 +100,6 @@ $.get(newsUrl, function(response) {
     
 
     let event = document.getElementsByClassName("articleContent");
-   
-
 
     // ------ to use the article index to match the popup index'x article ------
 
@@ -114,23 +114,29 @@ $.get(newsUrl, function(response) {
       let popup = document.querySelector('#popUp');
       popup.classList.toggle("hidden");
       if(popup){
-        
-        
+ 
       document.querySelector("#popTitle").innerHTML = response.articles[i].title;
 
       document.querySelector("#popDescrpt").innerHTML = response.articles[i].description;
 
       document.querySelector("#articaleLink").href = response.articles[i].url;   
 
-        
       }
       document.querySelector(".closePopUp").addEventListener("click", function(){
         let closePopup = document.querySelector('#popUp');
         closePopup.classList.toggle("hidden");
-           });
+        });
       
     }
  )}
 });
+}
 
 
+//                       -------++++------ Source 2  -------++++------
+
+const Reddit = "https://www.reddit.com/top.json";
+$.get(Reddit, function(response) {
+console.log(response);
+
+})
