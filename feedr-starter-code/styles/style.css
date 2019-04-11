@@ -6,7 +6,7 @@
 
 #popUp {
   opacity: 0.95;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -15,7 +15,7 @@
 }
 
 #popUp .closePopUp {
-  position: absolute;
+  position: fixed;
   top: 20px;
   right: 20px;
   font-size: 40px;
