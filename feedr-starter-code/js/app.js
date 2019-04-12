@@ -1,10 +1,9 @@
-var newsAPIurl = `https://newsapi.org/v2/top-headlines?country=us&apiKey=${apiKeyNewsapi}`;
 var newsSource=[
-  {Name: "DIGG",url: "http://digg.com/api/news/popular.json"},
-  {Name: "NewsAPI",url: newsAPIurl},
-  {Name: "Mashable",url: "http://mashable.com/stories.json"}
+  {Name: "DIGG",url: "https://accesscontrolalloworiginall.herokuapp.com/http://digg.com/api/news/popular.json"},
+  {Name: "NewsAPI",url: "https://newsapi.org/v2/top-headlines?country=us&apiKey="+apiKeyNewsapi},
+  {Name: "Mashable",url: "https://accesscontrolalloworiginall.herokuapp.com/http://mashable.com/stories.json"}
 ];
-articleinfo={image:'', url:'',title:'',tag:''};
+articleinfo={image:'', url:'',title:'',tag:'' ,description:''};
 var current= newsSource[0];
 
 $(document).ready(function(){
@@ -12,6 +11,33 @@ $(document).ready(function(){
   getDIGG(current);
   
 });
+$( '#SourceSet' ).on( 'click', 'li', function( event ) {
+  var changed =$( this ).text();
+  current= newsSource.find(function(element) {
+    return element.Name ==changed;
+  })
+  refresh(current);
+});
+
+
+$('#main').on('click', '.articleContent a', function(e) {
+  e.preventDefault();
+  console.log(e);
+  console.log($(this).attr( "href" ));
+  $('#popUp .container').find('h1').text($(this).children().html());
+  $('#popUp .container').find('p').text($(this).parent().find('h6').text());
+  $('#popUp .container').find('a').attr("href", $(this).attr( "href"));
+  $('#popUp').removeClass('hidden');
+  $('.closePopUp').removeClass('hidden');
+  $('#popUp').removeClass('loader');
+  $(".closePopUp").on("click", function(){
+    $('#popUp').addClass('hidden');
+    $('#closePopUp').addClass('hidden');
+  });
+});
+
+
+
 function refresh(source){
   if(current.Name==='DIGG'){
     getDIGG(current);
@@ -23,13 +49,7 @@ function refresh(source){
     getNewsAPI(current);
   }
 }
-$( "#SourceSet" ).on( "click", "li", function( event ) {
-  var changed =$( this ).text();
-  current= newsSource.find(function(element) {
-    return element.Name ==changed;
-  })
-  refresh(current);
-});
+
 
 function getNewsAPI(source){
   fetch(source.url)
@@ -66,6 +86,7 @@ function getMashable(source){
     articleinfo.url=value.link;
     articleinfo.title=value.title;
     articleinfo.tag=value.channel;
+    //articleinfo.description=value.content.plain;
   $("#main").append(getArticle(articleinfo));
   })
   });
