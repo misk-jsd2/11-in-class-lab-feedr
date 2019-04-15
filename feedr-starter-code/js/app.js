@@ -3,6 +3,13 @@ var feed = [];
 var articalsSection = document.getElementById("main");
 var sources = [
   {
+    key: "news",
+    title: "News",
+    link:
+      "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=" +
+      newsApiKey
+  },
+  {
     key: "digg",
     title: "Digg",
     link: "http://digg.com/api/news/popular.json"
@@ -31,7 +38,7 @@ var template = {
   createArticles: (feed, parent) => {
     let html = (index, title, imageSrc, articleURL, category) => {
       return `
-      <article onclick="onArticleClick(event,${index})" id=${index} class="article">
+      <article onclick="onArticleClick(event)" data-source="${feed.source}" data-index="${index}"  class="article">
       <section class="featuredImage">
         <img src="${imageSrc}" alt="" />
       </section>
@@ -46,14 +53,14 @@ var template = {
       </article>
     `;
     };
-    
-    feed.forEach((feed, index) => {
+
+    feed.feed.forEach((artical, index) => {
       let articalHtml = html(
         index,
-        feed.title,
-        feed.image,
-        feed.url,
-        feed.category
+        artical.title,
+        artical.image,
+        artical.url,
+        artical.category
       );
       parent.insertAdjacentHTML("beforeend", articalHtml);
     });
@@ -61,16 +68,15 @@ var template = {
 };
 // main function that will fetch api then append to html
 function refreshFeed(source) {
-
-  document.getElementById('sourceName').innerText = source.title
-
   $("#popUp").removeClass("hidden");
   api
     .getNews(source)
-    .then(data => {
-      rowData = data;
-      feed = getCleanData(source, rowData);
-      template.createArticles(feed, articalsSection);
+    .then(rowData => {
+      let sourceFedd = {};
+      sourceFedd.source = source.key
+      sourceFedd.feed =  getCleanData(source, rowData);
+      feed.push(sourceFedd)
+      template.createArticles(sourceFedd , articalsSection);
       $("#popUp").addClass("hidden");
     })
     .catch(e => {
@@ -81,9 +87,7 @@ function refreshFeed(source) {
 var api = {
   getNews: source => {
     try {
-      return fetch(source.link)
-        .then(res => res.json())
-        .then(json => json.data);
+      return fetch(source.link).then(res => res.json());
     } catch (e) {
       console.log(e);
     }
@@ -94,7 +98,7 @@ function getCleanData(source, rowData) {
 
   let cleanData = [];
   if (source.key == "digg") {
-    rowData.feed.forEach(element => {
+    rowData.data.feed.forEach(element => {
       let feedObj = {};
       feedObj.title = element.content.title;
       feedObj.url = element.content.url;
@@ -110,7 +114,7 @@ function getCleanData(source, rowData) {
     });
     return cleanData;
   } else if (source.key == "reddit") {
-    rowData.children.forEach(element => {
+    rowData.data.children.forEach(element => {
       let feedObj = {};
       feedObj.title = element.data.title;
       feedObj.url = "https://www.reddit.com/" + element.data.permalink;
@@ -125,33 +129,62 @@ function getCleanData(source, rowData) {
       cleanData.push(feedObj);
     });
     return cleanData;
+  } else if (source.key == "news") {
+
+    rowData.articles.forEach(element => {
+      let feedObj = {};
+      feedObj.title = element.title;
+      feedObj.url = element.url;
+      feedObj.image = element.urlToImage;
+      feedObj.description = element.description;
+      feedObj.category = element.source.name;
+
+
+      cleanData.push(feedObj);
+    });
+    return cleanData;
   }
 }
+function searchAll() {
+  articalsSection.innerHTML = "";
+  feed = []
 
+  document.getElementById("sourceName").innerText = "All";
 
+  sources.forEach(source => {
+    refreshFeed(source);
+  });
+}
 
-  // main
+// main
 
 (function() {
-
   var sourcesUl = document.getElementById("sourcesUl");
   template.createUl(sources, sourcesUl);
-  var source = sources[0];
-  refreshFeed(source);
+  searchAll();
 })();
 
-// events handling
+// events handling and function
 
 function onSourceClick(e) {
+  feed = []
+
   const key = e.target.id;
+
   let source = sources.find(src => src.key == key);
+  document.getElementById("sourceName").innerText = source.title;
+  // clear all feed
   articalsSection.innerHTML = "";
   refreshFeed(source);
 }
 
-function onArticleClick(e, index) {
+function onArticleClick(e) {
   e.preventDefault();
-  let article = feed[index];
+
+  let sourceKey = e.currentTarget.dataset.source
+  let index = e.currentTarget.dataset.index
+
+  let article = feed.find(sourceFeed => sourceFeed.source ==sourceKey ).feed[index];
   $("#popUp h1").html(article.title);
   $("#popUp p").html(article.description);
   $(".popUpAction").attr("href", article.url);
@@ -162,5 +195,10 @@ $(".closePopUp").click(function(e) {
   e.preventDefault();
   $("#popUp").addClass("loader hidden");
 });
-
-
+$("#search").click(function(e) {
+  searchAll();
+});
+$("#logo").click(function(e) {
+  e.preventDefault();
+  searchAll();
+});
