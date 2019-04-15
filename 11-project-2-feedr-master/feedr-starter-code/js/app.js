@@ -112,7 +112,7 @@ let news = function news() {
 
     let event = document.getElementsByClassName("articleContent");
 
-    // ------ to use the article index to match the popup index'x article ------
+    // ------ to use the article index to match the popup index'x article 
 
     
   for (let i = 0; i < indexs.length; i++) {
@@ -123,19 +123,17 @@ let news = function news() {
 
       
       let popup = document.querySelector('#popUp');
-      popup.classList.toggle("hidden");
-      if(popup){
- 
+      popup.classList.remove("hidden"); 
+
       document.querySelector("#popTitle").innerHTML = response.articles[i].title;
 
       document.querySelector("#popDescrpt").innerHTML = response.articles[i].description;
 
       document.querySelector("#articaleLink").href = response.articles[i].url;   
 
-      }
       document.querySelector(".closePopUp").addEventListener("click", function(){
         let closePopup = document.querySelector('#popUp');
-        closePopup.classList.toggle("hidden");
+        closePopup.classList.add("hidden");
         });
       
     }
@@ -208,7 +206,7 @@ const arrayOfjQueryArticles = [];
 
     let event = document.getElementsByClassName("articleContent");
 
-    // ------ to use the article index to match the popup index'x article ------
+    // ------ to use the article index to match the popup index'x article 
 
     
   for (let i = 0; i < indexs.length; i++) {
@@ -219,8 +217,8 @@ const arrayOfjQueryArticles = [];
 
       
       let popup = document.querySelector('#popUp');
-      popup.classList.toggle("hidden");
-      if(popup){
+      popup.classList.remove("hidden");
+      
  
       document.querySelector("#popTitle").innerHTML = response.data.children[i].data.title;
       
@@ -229,10 +227,10 @@ const arrayOfjQueryArticles = [];
 
       document.querySelector("#articaleLink").href = response.data.children[i].data.url;   
 
-      }
+      
       document.querySelector(".closePopUp").addEventListener("click", function(){
         let closePopup = document.querySelector('#popUp');
-        closePopup.classList.toggle("hidden");
+        closePopup.classList.add("hidden");
         });
       
     }
@@ -245,3 +243,5 @@ function truncateString(myString, limit) {
   return myString.substring(0, shortened);
 }
 };
+
+
