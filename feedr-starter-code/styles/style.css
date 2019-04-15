@@ -59,7 +59,7 @@
 
 /* Header styles */
 header {
-  background-color: #FE052C;
+  background-color: #458b74;
   position: fixed;
   top: 0;
   left: 0;
@@ -103,7 +103,7 @@ header #search a {
 }
 
 header #search a:hover {
-  background: #CC0020;
+  background: #377863;
 }
 
 header #search img {
@@ -128,7 +128,7 @@ header #search.active input {
 }
 
 header #search.active a {
-  background: #CC0020;
+  background: #377863;
 }
 
 header nav a {
@@ -143,7 +143,7 @@ header nav a {
 
 header nav a:hover {
   background-color: #fff;
-  color: #CC0020;
+  color: #377863;
 }
 
 nav ul {
@@ -156,7 +156,7 @@ nav ul {
 
 nav ul li {
 	display:inline-block;
-	background-color: #CC0020;
+	background-color: #377863;
   position: relative;
 }
 
@@ -219,12 +219,12 @@ nav ul ul li {
 
 .article .articleContent h3 {
   margin-bottom: 0;
-  color: #FE052C;
+  color: #28493e;
 }
 
 .article .articleContent h6 {
   margin-top: 0;
-  color: #666;
+  color: #28493e;
 }
 
 .article .impressions {
@@ -233,5 +233,5 @@ nav ul ul li {
   font-size: 30px;
   margin-top: 15px;
   text-align: right;
-  color: #097FB2;
+  color: #4aa19a;
 }
