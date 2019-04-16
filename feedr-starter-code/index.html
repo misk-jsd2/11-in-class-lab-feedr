@@ -25,8 +25,8 @@
               <ul>
                 <li><a href="#">News Source: <span>Source Name</span></a>
                   <ul>
-                      <li><a href="#">Source 1</a></li>
-                      <li><a href="#">Source 2</a></li>
+                      <li><a href="#" onclick="GetFirstSource()">API1</a></li>
+                      <li><a href="#" onclick="GetSecondSource()">API2</a></li>
                       <li><a href="#">Source 3</a></li>
                   </ul>
                 </li>
@@ -40,13 +40,13 @@
           </section>
         </header>
         <div id="popUp" class="loader hidden">
-          <a href="#" class="closePopUp">X</a>
+          <a href="#" onclick="HidePopup()" class="closePopUp">X</a>
           <div class="container">
-            <h1>Article title here</h1>
-            <p>
+            <h1 id="popupTitle">Article title here</h1>
+            <p id="popupContent">
               Article description/content here.
             </p>
-            <a href="#" class="popUpAction" target="_blank">Read more from source</a>
+            <a id="popupArticleLink" href="#" class="popUpAction" target="_blank">Read more from source</a>
           </div>
         </div>
         <section id="main" class="container">
@@ -55,7 +55,7 @@
               <img src="images/article_placeholder_1.jpg" alt="" />
             </section>
             <section class="articleContent">
-                <a href="#"><h3>Test article title</h3></a>
+                <a href="#" onclick="ShowPopup()"><h3>Test article title</h3></a>
                 <h6>Lifestyle</h6>
             </section>
             <section class="impressions">
