@@ -1,0 +1,1 @@
+var newsApiKey = '2e76daeef9ba4b1ab271ae398923b78a';
