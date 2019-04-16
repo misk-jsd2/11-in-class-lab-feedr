@@ -16,14 +16,13 @@
 
 // Assign those pieces of info to variables.
 
-// const jsonOfjQueryArticles = {};
-// const arrayOfjQueryArticles = [];
+const jsonOfjQueryArticles = {};
+const arrayOfjQueryArticles = [];
 
 
 $('.api ').on('click', function(event){
-jsonOfjQueryArticles = {};
-arrayOfjQueryArticles = [];
-$('#main').html("")
+  const jsonOfjQueryArticles = {};
+const arrayOfjQueryArticles = [];
 event.preventDefault();
 if (event.currentTarget.id === '1') {
   redditApi();
@@ -159,23 +158,7 @@ $('.article').on('click', function(event){
     
     appendArticles(arrayOfjQueryArticles);
     
-      
-   
-$('.article').on('click', function(event){
-  console.log('dsd')
-  event.preventDefault();
-  displayPopUp(event.currentTarget.id);
-  
-})
-
-   
-$('.closePopUp').on('click', function(event){
-  
-  event.preventDefault();
-  $('#popUp').addClass('hidden loader');
-  $('#main').css('display', 'block');
-  
-})
+    
      
     
     })}

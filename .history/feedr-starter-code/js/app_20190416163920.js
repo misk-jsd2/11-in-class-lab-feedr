@@ -23,7 +23,6 @@
 $('.api ').on('click', function(event){
 jsonOfjQueryArticles = {};
 arrayOfjQueryArticles = [];
-$('#main').html("")
 event.preventDefault();
 if (event.currentTarget.id === '1') {
   redditApi();
@@ -159,23 +158,7 @@ $('.article').on('click', function(event){
     
     appendArticles(arrayOfjQueryArticles);
     
-      
-   
-$('.article').on('click', function(event){
-  console.log('dsd')
-  event.preventDefault();
-  displayPopUp(event.currentTarget.id);
-  
-})
-
-   
-$('.closePopUp').on('click', function(event){
-  
-  event.preventDefault();
-  $('#popUp').addClass('hidden loader');
-  $('#main').css('display', 'block');
-  
-})
+    
      
     
     })}

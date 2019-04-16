@@ -16,28 +16,67 @@
 
 // Assign those pieces of info to variables.
 
-// const jsonOfjQueryArticles = {};
-// const arrayOfjQueryArticles = [];
+
 
 
 $('.api ').on('click', function(event){
-jsonOfjQueryArticles = {};
-arrayOfjQueryArticles = [];
-$('#main').html("")
 event.preventDefault();
 if (event.currentTarget.id === '1') {
   redditApi();
-  
 }
 
-
-if (event.currentTarget.id === '2') {
-  diggApi();
-}
 
 })
 
+const jsonOfjQueryArticles = {};
+const arrayOfjQueryArticles = [];
+function redditApi() {
+$.get("https://www.reddit.com/top.json", 
+  function(results){
 
+
+    results.data.children.forEach((article, index) => {
+  let reddit_json = {
+
+     'category' : article.data.subreddit,
+     'title' : article.data.title,
+     'imgSrc' : article.data.thumbnail,
+     'articleURL' : article.data.url,
+     'apiUsed' : 'Reddit'
+    
+
+
+
+  }
+ 
+
+  let newArticle = `
+  <article id=${index} class="article">
+    <section class="featuredImage">
+      <img src="${reddit_json.imgSrc}" alt="" />
+    </section>
+    <section class="articleContent">
+        <a href=""><h3>${reddit_json.title}</h3></a>
+        <h6>${reddit_json.category}</h6>
+    </section>
+    <section class="impressions">
+      ${reddit_json.apiUsed}
+    </section>
+    <div class="clearfix"></div>
+    </article>
+  `
+   
+
+  jsonOfjQueryArticles[index] = reddit_json
+  arrayOfjQueryArticles.push(newArticle)
+})
+
+appendArticles(arrayOfjQueryArticles);
+
+
+ 
+
+})}
 
 
 
@@ -100,13 +139,6 @@ function redditApi() {
   
   
    
-$('.article').on('click', function(event){
-  console.log('dsd')
-  event.preventDefault();
-  displayPopUp(event.currentTarget.id);
-  
-})
-
   
   })}
   
@@ -114,21 +146,19 @@ $('.article').on('click', function(event){
 
 
   function diggApi() {
-    $.get('https://newsapi.org/v2/top-headlines?' +
-    'country=us&' +
-    'apiKey=ba2974daef134da89b901a3c6a26e815', 
+    $.get("http://digg.com/api/news/popular.json", 
       function(results){
-        console.log(results.articles)
     
-        results.articles.forEach((article, index) => {
+    
+        results.data.feed.children.forEach((article, index) => {
       let digg_json = {
     
-         'category' : article.source.name,
-         'title' : article.title,
-         'imgSrc' : article.urlToImage,
-         'articleURL' : article.url,
-         'description' : article.description,
-         'apiUsed' : 'News'
+         'category' : article.content.domain,
+         'title' : article.content.title_alt,
+         'imgSrc' : article.data.thumbnail.images[0].url,
+         'articleURL' : article.data.content.url,
+         'description' : article.data.content.description,
+         'apiUsed' : 'digg'
         
     
     
@@ -159,23 +189,7 @@ $('.article').on('click', function(event){
     
     appendArticles(arrayOfjQueryArticles);
     
-      
-   
-$('.article').on('click', function(event){
-  console.log('dsd')
-  event.preventDefault();
-  displayPopUp(event.currentTarget.id);
-  
-})
-
-   
-$('.closePopUp').on('click', function(event){
-  
-  event.preventDefault();
-  $('#popUp').addClass('hidden loader');
-  $('#main').css('display', 'block');
-  
-})
+    
      
     
     })}
@@ -215,5 +229,11 @@ $('.closePopUp').on('click', function(event){
     
     }
 
-  
+    $('.article ').on('click', function(event){
+      console.log('dsd')
+      event.preventDefault();
+      displayPopUp(event.currentTarget.id);
+      
+    })
+
 
