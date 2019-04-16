@@ -167,15 +167,6 @@ $('.article').on('click', function(event){
   displayPopUp(event.currentTarget.id);
   
 })
-
-   
-$('.closePopUp').on('click', function(event){
-  
-  event.preventDefault();
-  $('#popUp').addClass('hidden loader');
-  $('#main').css('display', 'block');
-  
-})
      
     
     })}

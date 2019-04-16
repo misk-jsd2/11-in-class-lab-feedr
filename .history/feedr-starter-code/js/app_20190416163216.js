@@ -16,14 +16,12 @@
 
 // Assign those pieces of info to variables.
 
-// const jsonOfjQueryArticles = {};
-// const arrayOfjQueryArticles = [];
 
+const jsonOfjQueryArticles = {};
+const arrayOfjQueryArticles = [];
 
 $('.api ').on('click', function(event){
-jsonOfjQueryArticles = {};
-arrayOfjQueryArticles = [];
-$('#main').html("")
+  console.log('dsds')
 event.preventDefault();
 if (event.currentTarget.id === '1') {
   redditApi();
@@ -118,17 +116,17 @@ $('.article').on('click', function(event){
     'country=us&' +
     'apiKey=ba2974daef134da89b901a3c6a26e815', 
       function(results){
-        console.log(results.articles)
+        console.log(results)
     
         results.articles.forEach((article, index) => {
       let digg_json = {
     
-         'category' : article.source.name,
-         'title' : article.title,
-         'imgSrc' : article.urlToImage,
-         'articleURL' : article.url,
-         'description' : article.description,
-         'apiUsed' : 'News'
+         'category' : article.content.domain,
+         'title' : article.content.title_alt,
+         'imgSrc' : article.data.thumbnail.images[0].url,
+         'articleURL' : article.data.content.url,
+         'description' : article.data.content.description,
+         'apiUsed' : 'digg'
         
     
     
@@ -159,23 +157,7 @@ $('.article').on('click', function(event){
     
     appendArticles(arrayOfjQueryArticles);
     
-      
-   
-$('.article').on('click', function(event){
-  console.log('dsd')
-  event.preventDefault();
-  displayPopUp(event.currentTarget.id);
-  
-})
-
-   
-$('.closePopUp').on('click', function(event){
-  
-  event.preventDefault();
-  $('#popUp').addClass('hidden loader');
-  $('#main').css('display', 'block');
-  
-})
+    
      
     
     })}
