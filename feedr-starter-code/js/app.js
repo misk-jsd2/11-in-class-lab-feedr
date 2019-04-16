@@ -157,12 +157,13 @@ function searchAll() {
 }
 
 // main
-
-(function() {
+$(document).ready(function(){
   var sourcesUl = document.getElementById("sourcesUl");
   template.createUl(sources, sourcesUl);
   searchAll();
-})();
+})
+
+
 
 // events handling and function
 
