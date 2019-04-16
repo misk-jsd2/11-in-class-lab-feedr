@@ -16,6 +16,7 @@
 
 // Assign those pieces of info to variables.
 
+const jsonOfjQueryArticles = {};
 const arrayOfjQueryArticles = [];
 
 $.get("https://www.reddit.com/top.json", 
@@ -23,30 +24,38 @@ $.get("https://www.reddit.com/top.json",
     console.log(results);
 
     results.data.children.forEach((article, index) => {
-  let category = article.data.subreddit;
-  let title = article.data.title;
-  let imgSrc = article.data.thumbnail;
-  let articleURL = article.data.url;
-  let apiUsed = 'Reddit'
-  
+  let reddit_json = {
+
+     'category' : article.data.subreddit,
+     'title' : article.data.title,
+     'imgSrc' : article.data.thumbnail,
+     'articleURL' : article.data.url,
+     'apiUsed' : 'Reddit'
+    
+
+
+
+  }
+ 
 
   let newArticle = `
   <article id=${index} class="article">
     <section class="featuredImage">
-      <img src="${imgSrc}" alt="" />
+      <img src="${reddit_json.imgSrc}" alt="" />
     </section>
     <section class="articleContent">
-        <a href=""><h3>${title}</h3></a>
-        <h6>${category}</h6>
+        <a href=""><h3>${reddit_json.title}</h3></a>
+        <h6>${reddit_json.category}</h6>
     </section>
     <section class="impressions">
-      ${apiUsed}
+      ${reddit_json.apiUsed}
     </section>
     <div class="clearfix"></div>
     </article>
   `
    
 
+  jsonOfjQueryArticles[index] = reddit_json
   arrayOfjQueryArticles.push(newArticle)
 })
 
@@ -63,23 +72,21 @@ $('.article ').on('click', function(event){
 })
 
 function displayPopUp(article) {
-  
-  let category = article.data.subreddit;
-  let title = article.data.title;
-  let imgSrc = article.data.thumbnail;
-  let articleURL = article.data.url;
+
+  let jsonArticle = jsonOfjQueryArticles[article]
+ 
 
   let articlePopUp = `  <div class="container">
-  <h1>${title}</h1>
+  <h1>${jsonArticle.title}</h1>
   <p>
-    ${title}
+    ${jsonArticle.title}
   </p>
-  <a href="${articleURL}" class="popUpAction" target="_blank">Read more from source</a>
+  <a href="${jsonArticle.articleURL}" class="popUpAction" target="_blank">Read more from source</a>
 </div>`
 
   $("#popUp").removeClass('hidden loader')
 
-  $('#popUp > div').html(article);
+  $('#popUp > div').html(articlePopUp);
 
 
 
