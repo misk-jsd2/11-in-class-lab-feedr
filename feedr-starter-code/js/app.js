@@ -1,80 +1,71 @@
-var diggArticlesArray = [];
-$main = $("#main");
-$popUp = $('#popUp');
 
-function getDiggArticles() {
-  $popUp.removeClass('hidden');
+$Mashable = $('#Mashable');
+$Reddit = $('#Reddit');
+$Digg = $('#Digg');
 
-  var urls = {
-    Mashable : "http://feedr-api.wdidc.org/mashable.json"  ,
-    Reddit :  'https://www.reddit.com/top.json',
-    Digg :  'http://feedr-api.wdidc.org/digg.json',
-  }
-  
-  function getArticle(url) {
-  
-    $.get("http://feedr-api.wdidc.org/mashable.json", 
-    function(results){
-      console.log(results);
-      results.data.feed.forEach(function(result){
-        $("ul").append("<li>"+result.content.title+"</li>")
-    })
-  }) 
-    $.ajax({
-      url:url,
-      success: function(response){
-        $articles1.empty();
-  
-        console.log(response);
-        
-        if ($source.text()=="Mashable") {
-          var articles = response.hot
-          articles.forEach(function(article){
-           var b = template({title:article.title, image: article.feature_image, type:article.channel, description:article.content.plain, url:article.short_url})	 
-                $articles1.append(b)
-    })} else if ($source.text()=="Reddit") {
-          var articles = response.data.children
-          articles.forEach(function(article){
-           if (article.data.preview){
-           var imageURL = article.data.preview.images[0].source.url;
-          } else {
-            var imageURL = 'images/article_placeholder_2.jpg'
-          }
-          var b = template({title:article.data.title, image:imageURL, type: article.data.subreddit, url:article.data.url})
-          $articles1.append(b)  		
-        })
 
-      $main.append(diggArticleDOMNodes)
+var urls = {
+	Mashable : "http://feedr-api.wdidc.org/mashable.json"  ,
+	Reddit :  'https://www.reddit.com/top.json',
+	Digg :  'http://feedr-api.wdidc.org/digg.json',
 
-      $('.articleContent h3').on('click', (event) => {
-        event.preventDefault()
-        console.log(event.target.id)
-        
-        let chosenArticle = diggArticlesArray[event.target.id]
+}
 
-        $popUp
-          .attr('class', '')
-          .empty()
-          .html(`
-            <a href="#" class="closePopUp">X</a>
-            <div class="container">
-              <h1>${chosenArticle.title}</h1>
-              <p>
-                ${chosenArticle.description}
-              </p>
-              <a href=${chosenArticle.url} class="popUpAction" target="_blank">Read more from source</a>
-            </div>
-          `)
+function getArticles(url) {
+	$.ajax({
+		url:url,
+		success: function(response){
+			$articlesGoHere.empty();
 
-        $('.closePopUp').on('click', () => {
-          console.log("close pop up clicked")
-          $popUp.addClass('hidden');
-        }); 
-      })
+			console.log(response);
+			if ($source.text()=="Mashable") {
+				var articles = response.hot
+				articles.forEach(function(feeds){
+				 var contents = template({title:feeds.title, image: feeds.feature_image, description:feeds.content.plain, url:feeds.short_url})
+          		$articlesGoHere.append(contents)
 
-      $popUp.addClass('hidden');
-    })
+			})
+			} else if ($source.text()=="Reddit") {
+				var articles = response.data.children
+				articles.forEach(function(feeds){
+				
+				 
+				 if (feeds.data.preview){
+          if (feeds.data.preview){
+	
+				 var imageURL = feeds.data.preview.images[0].source.url;
+				} else {
+					var imageURL = 'images/article_placeholder_2.jpg'
+				}
+				var contents = template({title:feeds.data.title, image:imageURL, url:feeds.data.url})
+          		$articlesGoHere.append(contents)
+          		
+			})
+			} else if ($source.text()=="Digg") {
+				var feed = response.data.feed;
+				feed.forEach(function(feeds){
+				
+				 var contents = template({title:feeds.data.title, image:imageURL, url:feeds.data.url})
+				 if (feeds.content.media){
+			
+				 	var imageURL = feeds.content.media.images[0].url;
+
+				 }
+
+				 var contents = template({title:feeds.data.title, image:imageURL, url:feeds.data.url})
+
+          		$articlesGoHere.append(contents);  		
+			})
+			}
+		}
+	})
+}
+
+function hidePopUp() {
+  $('#popUp').addClass("hidden");
+  $("#popTitle").text('');
+  $("#popDescription").text('');
+  $("#LINK").attr('href','#');
 }
 
 
-getDiggArticles()
